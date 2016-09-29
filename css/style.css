@@ -1,0 +1,10 @@
+.wjmljc_custom_job_count{
+	width: 100%; font-size:20px; color:#2b6ea9;display:inline-block;
+}
+.wjmljc_custom_cls {
+	list-style-type:none;
+}
+.wjmljc_custom_cls li {
+	float: left;
+	margin-right: 1px;
+}
