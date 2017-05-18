@@ -96,8 +96,18 @@ function wjmljc_action_ajax(){
 }
 
 function wjmljc_just_jobs() {
-    $jobs = wjmljc_count_all_jobs();
-    echo $jobs;
+    echo wjmljc_count_all_jobs();
+    return;
+}
+
+function wjmljc_just_company() {
+    echo wjmljc_count_all_company();
+
+    return;
+}
+
+function wjmljc_just_seeker() {
+    echo wjmljc_count_all_job_seeker();
     return;
 }
 
@@ -113,6 +123,8 @@ add_action('wp_ajax_nopriv_wjmljc_action_ajax', 'wjmljc_action_ajax');
 add_action('wp_ajax_wjmljc_action_ajax', 'wjmljc_action_ajax');
 add_shortcode('livecount_job','wjmljc_template_load');
 add_shortcode('livecount_just_jobs','wjmljc_just_jobs');
+add_shortcode('livecount_just_company','wjmljc_just_company');
+add_shortcode('livecount_just_seeker','wjmljc_just_seeker');
 
 add_action ('wp_head' , 'wjmljc_count_all_job_seeker');
 
