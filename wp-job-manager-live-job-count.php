@@ -5,7 +5,8 @@
  * Description: With the help of this plugin admin user can count and display total job, total registered company and total job seeker, this pluging will load data without page refresh
  * Author:      Moinul
  * Author URI:  http://discovernanosoft.com
- * Version:     1.0
+ * Contributor: Cal Evans
+ * Version:     1.1.1
  * Requires at least: 4.0
  * Tested up to: 4.6
  * Text Domain: job_manager_live_job_count
@@ -61,28 +62,64 @@ AND $wpdb->usermeta.meta_value LIKE '%candidate%'");
 function wjmljc_count_all_company(){
 
  global $wpdb;
- $meta_key = '_company_name';
- $sql = "SELECT count(DISTINCT pm.meta_value) FROM $wpdb->postmeta pm JOIN $wpdb->posts p ON (p.ID = pm.post_id)
- WHERE pm.meta_key = '$meta_key' AND p.post_type = 'job_listing' AND pm.meta_value != ''";
+ $sql = "select count(*) 
+           from {$wpdb->posts} 
+          where post_type='gd_place' 
+                and post_status='publish';";
   $count = $wpdb->get_var($sql);
  return $count; 
 
 }
-/* Ajax call */
 
+
+function wjmljc_count_all_jobs() {
+     global $wpdb; 
+     $sql = "SELECT COUNT(*) 
+               FROM $wpdb->posts
+              WHERE post_status = 'publish' 
+                    AND post_type = 'job_listing'";
+     $numpost = $wpdb->get_var($sql); 
+   return $numpost;
+}
+
+
+/* Ajax call */
 function wjmljc_action_ajax(){
     wjmljc_register_css_js();
-  global $wpdb;
- $numpost = $wpdb->get_var("SELECT COUNT(*) FROM $wpdb->posts
- WHERE post_status = 'publish' AND post_type = 'job_listing'"); 
-   $numpost;
-   $array=array('count_job'=>$numpost,'count_company'=>wjmljc_count_all_company(),
-    'count_seeker'=>wjmljc_count_all_job_seeker());
-   echo json_encode($array);
+     $numpost = $wpdb->get_var("SELECT COUNT(*) FROM $wpdb->posts
+     WHERE post_status = 'publish' AND post_type = 'job_listing'"); 
+       $array =['count_job'     => wjmljc_count_all_jobs(),
+                'count_company' => wjmljc_count_all_company(),
+                'count_seeker'  => wjmljc_count_all_job_seeker()];
+       echo json_encode($array);
     
     die();
   
 }
+
+/*
+ * Returns just the number of jobs in the system.
+ */
+function wjmljc_just_jobs() {
+    //echo ;
+    return wjmljc_count_all_jobs();
+}
+
+/*
+ * Returns just the number of companies in the system.
+ */
+function wjmljc_just_company() {
+    return wjmljc_count_all_company();
+}
+
+/*
+ * Returns just the number of seekers in the system.
+ */
+
+function wjmljc_just_seeker() {
+    return wjmljc_count_all_job_seeker();
+}
+
 
 /* Get and include template files. */
  
@@ -94,6 +131,10 @@ function wjmljc_template_load(){
 add_action('wp_ajax_nopriv_wjmljc_action_ajax', 'wjmljc_action_ajax');
 add_action('wp_ajax_wjmljc_action_ajax', 'wjmljc_action_ajax');
 add_shortcode('livecount_job','wjmljc_template_load');
+add_shortcode('livecount_just_jobs','wjmljc_just_jobs');
+add_shortcode('livecount_just_company','wjmljc_just_company');
+add_shortcode('livecount_just_seeker','wjmljc_just_seeker');
+
 add_action ('wp_head' , 'wjmljc_count_all_job_seeker');
 
 /* Create wjmljc settings menu */
