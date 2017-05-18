@@ -6,7 +6,7 @@
  * Author:      Moinul
  * Author URI:  http://discovernanosoft.com
  * Contributor: Cal Evans
- * Version:     1.1.0
+ * Version:     1.1.1
  * Requires at least: 4.0
  * Tested up to: 4.6
  * Text Domain: job_manager_live_job_count
@@ -62,9 +62,10 @@ AND $wpdb->usermeta.meta_value LIKE '%candidate%'");
 function wjmljc_count_all_company(){
 
  global $wpdb;
- $meta_key = '_company_name';
- $sql = "SELECT count(DISTINCT pm.meta_value) FROM $wpdb->postmeta pm JOIN $wpdb->posts p ON (p.ID = pm.post_id)
- WHERE pm.meta_key = '$meta_key' AND p.post_type = 'job_listing' AND pm.meta_value != ''";
+ $sql = "select count(*) 
+           from {$wpdb->posts} 
+          where post_type='gd_place' 
+                and post_status='publish';";
   $count = $wpdb->get_var($sql);
  return $count; 
 
@@ -96,14 +97,24 @@ function wjmljc_action_ajax(){
   
 }
 
+/*
+ * Returns just the number of jobs in the system.
+ */
 function wjmljc_just_jobs() {
     //echo ;
     return wjmljc_count_all_jobs();
 }
 
+/*
+ * Returns just the number of companies in the system.
+ */
 function wjmljc_just_company() {
     return wjmljc_count_all_company();
 }
+
+/*
+ * Returns just the number of seekers in the system.
+ */
 
 function wjmljc_just_seeker() {
     return wjmljc_count_all_job_seeker();
