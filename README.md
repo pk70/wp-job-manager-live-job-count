@@ -35,7 +35,7 @@ With the help of this plugin admin user can display total job, total registered 
 * After activation you can see Settings link, in pluging settings page manage your setting
 * Just use shortcode `[livecount_job]` in you page or post or you can manual add this in your suitable template for display.
 * You can change icon or html from wp-job-manager-live-job-count/job-count-template.php and you can change css from wp-job-manager-live-job-count pluging css directory.
-* To display the numbers individually outside of the template, use the shortcodes  `[livecount_just_jobs]`, `[livecount_just_company]`,`[livecount_just_seeker]` respectively.
+* To display the numbers individually outside of the template, use the shortcodes  `[livecount_just_jobs]`, `[livecount_just_company]`,`[livecount_just_seeker]` respectively. These tags to not live update but simply display the static number.
 
 # Support
 Contact me at sajibg7@gmail.com
