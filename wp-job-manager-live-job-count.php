@@ -68,21 +68,39 @@ function wjmljc_count_all_company(){
  return $count; 
 
 }
-/* Ajax call */
 
+
+function wjmljc_count_all_jobs() {
+     global $wpdb; 
+     $sql = "SELECT COUNT(*) 
+               FROM $wpdb->posts
+              WHERE post_status = 'publish' 
+                    AND post_type = 'job_listing'";
+     $numpost = $wpdb->get_var($sql); 
+   return $numpost;
+}
+
+
+/* Ajax call */
 function wjmljc_action_ajax(){
     wjmljc_register_css_js();
-  global $wpdb;
- $numpost = $wpdb->get_var("SELECT COUNT(*) FROM $wpdb->posts
- WHERE post_status = 'publish' AND post_type = 'job_listing'"); 
-   $numpost;
-   $array=array('count_job'=>$numpost,'count_company'=>wjmljc_count_all_company(),
-    'count_seeker'=>wjmljc_count_all_job_seeker());
-   echo json_encode($array);
+     $numpost = $wpdb->get_var("SELECT COUNT(*) FROM $wpdb->posts
+     WHERE post_status = 'publish' AND post_type = 'job_listing'"); 
+       $array =['count_job'     => wjmljc_count_all_jobs(),
+                'count_company' => wjmljc_count_all_company(),
+                'count_seeker'  => wjmljc_count_all_job_seeker()];
+       echo json_encode($array);
     
     die();
   
 }
+
+function wjmljc_just_jobs() {
+    $jobs = wjmljc_count_all_jobs();
+    echo $jobs;
+    return;
+}
+
 
 /* Get and include template files. */
  
@@ -94,6 +112,8 @@ function wjmljc_template_load(){
 add_action('wp_ajax_nopriv_wjmljc_action_ajax', 'wjmljc_action_ajax');
 add_action('wp_ajax_wjmljc_action_ajax', 'wjmljc_action_ajax');
 add_shortcode('livecount_job','wjmljc_template_load');
+add_shortcode('livecount_just_jobs','wjmljc_just_jobs');
+
 add_action ('wp_head' , 'wjmljc_count_all_job_seeker');
 
 /* Create wjmljc settings menu */
