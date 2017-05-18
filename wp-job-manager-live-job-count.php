@@ -4,9 +4,9 @@
  * Plugin URI:  https://github.com/pk70/wp-job-manager-live-job-count
  * Description: With the help of this plugin admin user can count and display total job, total registered company and total job seeker, this pluging will load data without page refresh
  * Author:      Moinul
- * Author: Cal Evans
  * Author URI:  http://discovernanosoft.com
- * Version:     1.1
+ * Contributor: Cal Evans
+ * Version:     1.1.0
  * Requires at least: 4.0
  * Tested up to: 4.6
  * Text Domain: job_manager_live_job_count
@@ -97,19 +97,16 @@ function wjmljc_action_ajax(){
 }
 
 function wjmljc_just_jobs() {
-    echo "<h1>".wjmljc_count_all_jobs()."</h1>";
-    return;
+    //echo ;
+    return wjmljc_count_all_jobs();
 }
 
 function wjmljc_just_company() {
-    echo wjmljc_count_all_company();
-
-    return;
+    return wjmljc_count_all_company();
 }
 
 function wjmljc_just_seeker() {
-    echo wjmljc_count_all_job_seeker();
-    return;
+    return wjmljc_count_all_job_seeker();
 }
 
 
